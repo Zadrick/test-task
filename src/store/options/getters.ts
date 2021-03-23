@@ -1,5 +1,5 @@
-import { state } from './state'
+import { StateInterface} from './state'
 
 export default {
-  visitsQuantity: ({ visitsQuantity }: state)=> visitsQuantity
+  visitsQuantity: ({ visitsQuantity }: StateInterface)=> visitsQuantity
 }

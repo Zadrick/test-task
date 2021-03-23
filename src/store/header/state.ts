@@ -8,8 +8,6 @@ export const state = {
   ]
 }
 
-type stateType = typeof state
-
-export interface state extends stateType {}
+export type StateInterface= typeof state
 
 export default state

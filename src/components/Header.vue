@@ -1,9 +1,8 @@
 <template lang="pug">
   header
     .d_flex
-      i(class="fas fa-bars header__bars c-sor_point" @click="openNavbar")
+      Navbar(:props="navbar")
       router-link(to="/")#logo
-    //- let that we are finding a car
     router-link(to="#" v-if="$route.path === '/options'" style="color: #000") вернуться к публичной части
     Autocomplete(:props="autocomplete" v-else)
     
@@ -17,15 +16,28 @@ import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {
-    Autocomplete: ()=> import('@/components/Autocomplete.vue')
+    Autocomplete: ()=> import('@/components/Autocomplete.vue'),
+    Navbar: ()=> import('@/components/Navbar.vue')
   }
 })
 export default class Home extends Vue {
   localStorage = localStorage
 
-  openNavbar() {
-    dispatchEvent(new Event('open-navbar'))
+  get navbar() {
+    return {
+      links: this.$route.path === '/options'? [
+          { text: 'Группы пользователей', to: 'users' },
+          { text: 'Пользователи', to: 'users-groups' }
+        ]
+        : [
+          { text: 'Главная', to: '/' },
+          { text: 'Сайт', to: '/app' },
+          { text: 'Заявки', to: '/requests' },
+          { text: 'Настройки', to: '/options' }
+        ]
+    }
   }
+
   autocomplete = {
     items: this.$store.getters['header/cars']
   }

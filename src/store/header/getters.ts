@@ -1,5 +1,5 @@
-import { state } from './state'
+import { StateInterface} from './state'
 
 export default {
-  cars: ({ cars }: state)=> cars
+  cars: ({ cars }: StateInterface)=> cars
 }

@@ -1,41 +1,49 @@
 <template lang="pug">
-  .navbar(ref="navbar" :class="visible? 'navbar_show': 'navbar_hide'")
-    i(class="fas fa-times navbar__close c-sor_point" ref="close-navbar" @click="visible = false")
-    .navbar__content
-      router-link.navbar__content__links(v-for="link in props.items" :to="link.to") {{link.text}}
+  div
+    i(ref="open-navbar" class="fas fa-bars navbar__open c-sor_point" v-show="!visible" @click="visible = true")
+    .navbar(ref="navbar" :class="visible? 'navbar_show': 'navbar_hide'")
+      i(ref="close-navbar" class="fas fa-times navbar__close c-sor_point" @click="visible = false")
+      .navbar__content
+        router-link.navbar__content__links(v-for="link in props.links.filter(e=> e.to !== $route.path)" :to="link.to") {{link.text}}
       
 </template>
 
 <script lang="ts">
+import { PropType } from 'vue'
 import { Vue, Component, Watch } from 'vue-property-decorator';
+
+export interface NavbarProps {
+  links: { text: string, to: string}[]
+}
 
 @Component({
   props: {
-    props: {}
+    props: {
+      type: Object as PropType<NavbarProps>,
+      required: true
+    }
   }
 })
 export default class Navbar extends Vue {
 
-  visible = false
- 
-  @Watch('visible') onVisibleChange(c: boolean) {
-    const { navbar } = this.$refs //annotatio Element dont works
-    navbar.style.display = 'block'
-    c? navbar.classList.add('navbar_show')
-    :navbar.classList.add('navbar_hide')
-  }
+  visible = !0
 
   mounted() {
-    window.addEventListener('open-navbar', ()=> this.visible = true)
+    const { navbar } = this.$refs
+
+    window.addEventListener('click', e=> {
+      if(this.visible && e.target !== navbar && e.target !== this.$refs['open-navbar']) this.visible = false
+    })
   }
+
 }
 </script>
 
 <style lang="scss" scoped>
   .navbar {
-    display: none;
     border-top-right-radius: 20px;
     position: fixed ;
+    z-index: 3;
     top: 0;
     min-width: 200px;
     overflow: hidden;
@@ -44,6 +52,15 @@ export default class Navbar extends Vue {
 
     border-right: 5px solid #8c00ff;
     border-top: 5px solid #8c00ff;
+  }
+
+  .navbar__open {
+    color: #fff;
+
+    &:hover {
+      transform: rotateY(180deg);
+      transition: .2s;
+    }
   }
 
   .navbar__close {

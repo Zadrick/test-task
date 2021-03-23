@@ -1,8 +1,8 @@
 import { SET_VISITS_QUANTITY } from './mutations-types'
-import { state } from './state'
+import { StateInterface} from './state'
 
 export default {
-  [SET_VISITS_QUANTITY](state: state, n: number) {
+  [SET_VISITS_QUANTITY](state: StateInterface, n: number) {
     state.visitsQuantity = n
   }
 }

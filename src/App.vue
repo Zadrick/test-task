@@ -5,7 +5,6 @@
     Header
     .body
       span.body__path {{location.origin + $route.path.replaceAll('/', '->')}}
-      Navbar(:props="navbar")
       notifications(group="app" position="top right")
 
       router-view
@@ -20,7 +19,6 @@ import store from './store'
 @Component({
   components: {
     Header: ()=> import('@/components/Header.vue'),
-    Navbar: ()=> import('@/components/Navbar.vue'),
     Footer: ()=> import('@/components/Footer.vue')
   }
 })
@@ -49,10 +47,6 @@ export default class App extends Vue {
       else this.$store.commit(`${c.replace('/', '')}/SET_VISITS_QUANTITY`, this.$store.getters[`${c.replace('/', '')}/visitsQuantity`] +1)
       this.$notify({ group: 'app', text: this.navbar.items.find(e=> e.to === c)!.text, duration: 2000, speed: 200})
     }
-  }
-
-  mounted() {
-    console.log(this.navbar)
   }
 } 
 </script>
